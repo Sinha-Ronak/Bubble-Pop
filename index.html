@@ -1,0 +1,71 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubble Game</title>
+    <style>
+      /* Welcome Page Styles */
+      .welcome-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: rgb(0, 155, 251);
+        color: white;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        z-index: 1000;
+      }
+
+      .welcome-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .welcome-page p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .welcome-button {
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        font-size: 1.25rem;
+        background-color: rgb(57, 173, 250);
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: white;
+      }
+
+      .welcome-button:hover {
+        background-color: rgb(0, 109, 181);
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="welcome-page">
+      <h1>Welcome to Bubble Smash</h1>
+      <p>Pop the bubbles, beat the timer, and reach your target score!</p>
+      <button
+        id="startGameBtn"
+        class="welcome-button"
+        onclick="location.href='bubblegame.html';"
+      >
+        Start Game
+      </button>
+      <button
+        id="instructionsBtn"
+        class="welcome-button"
+        onclick="location.href='instructions.html';"
+      >
+        Instructions
+      </button>
+    </div>
+  </body>
+</html>

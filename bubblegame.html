@@ -39,11 +39,9 @@
         height: 20%;
         width: 100%;
         display: flex;
-        align-items: center;
         justify-content: space-evenly;
-        gap: 1.875rem;
+        align-items: center;
         flex-wrap: wrap;
-        padding: 0.3125rem;
       }
 
       /* Common styles for Scoreboard, Timer, and Hit Counter */
@@ -51,24 +49,25 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        height: 2.5rem;
+        height: 3rem;
         width: 8.125rem;
-        gap: 0.625rem;
+        gap: 0.5rem;
         padding: 0.125rem;
         color: #fff;
       }
 
       .score-box {
         border-radius: 0.3125rem;
-        height: 2.8125rem;
-        width: 2.8125rem;
+        height: 2.5rem;
+        width: 2.5rem;
         background-color: white;
         color: black;
-        font-size: 1.5625rem;
+        font-size: 1.4rem;
         display: flex;
         justify-content: center;
         align-items: center;
         font-weight: 800;
+        padding: 0.125rem;
       }
 
       /* Dashboard for Bubbles */
@@ -211,20 +210,15 @@
 
         .upper {
           height: 30%;
-          gap: 0.3125rem;
-          padding: 0.3125rem 0px;
           justify-content: space-evenly;
         }
 
-        .score-board {
-          margin: 0.3125rem 0px;
-        }
         .score-board > h2 {
-          font-size: 1.25rem;
+          font-size: 1rem;
         }
 
         .score-box {
-          font-size: 1.25rem;
+          font-size: 1rem;
           height: 1.875rem;
           width: 1.875rem;
         }
@@ -257,46 +251,51 @@
     </style>
   </head>
   <body>
-    <div class="power-ups">
+    <section class="power-ups">
       <div class="freeze-time">
-        <img src="stopwatch.jpg" alt="Time Freze" />
+        <img src="stopwatch.jpg" alt="Time Freeze" />
       </div>
-    </div>
-    <div class="main">
+    </section>
+
+    <main class="main">
       <!-- Scoreboard Section -->
-      <div class="upper">
-        <div class="score-board">
+      <header class="upper">
+        <section class="score-board">
           <h2>SCORE</h2>
           <div id="scoreval" class="score-box">0</div>
-        </div>
-        <div class="score-board">
+        </section>
+        <section class="score-board">
           <h2>TARGET</h2>
           <div id="targetval" class="score-box">150</div>
-        </div>
-        <div class="score-board">
+        </section>
+        <section class="score-board">
           <h2>TIMER</h2>
           <div id="timeval" class="score-box">100</div>
-        </div>
-        <div class="score-board">
+        </section>
+        <section class="score-board">
           <h2>LEVEL</h2>
           <div id="levelval" class="score-box">1</div>
-        </div>
-        <div class="score-board">
+        </section>
+        <section class="score-board">
+          <h2>COMBO</h2>
+          <div id="comboval" class="score-box">0</div>
+        </section>
+        <section class="score-board">
           <h2>HIT</h2>
           <div id="hitval" class="score-box">1</div>
-        </div>
-      </div>
+        </section>
+      </header>
 
       <!-- Dashboard for Bubbles -->
-      <div class="dash-board"></div>
+      <section class="dash-board"></section>
 
       <!-- Modal for Game Over -->
-      <div class="modal" id="gameOverModal">
+      <section class="modal" id="gameOverModal">
         <h2>Game Over</h2>
         <p>Your Score is: <span id="finalScore">0</span></p>
         <button onclick="restartGame()">Play Again</button>
-      </div>
-    </div>
+      </section>
+    </main>
 
     <!-- Sound Effects -->
     <audio src="bubble-pop 1.mp3" id="clickSound"></audio>
@@ -312,9 +311,10 @@
       var initialTimer = 100; // Initial value of the Timer
       var targetHit; // Variable to store the current target number
       var intervalTimer; // Variable to store the interval for the timer
-      var timeFreezeUsed = false; // Variable to check that Time Freeze is used or not
+      var timeFreezeUsed = true; // Variable to check that Time Freeze is used or not
       var targetScore = 150; // Variable to store the Target Score
       var level = 1; // Variable to store Level
+      var combo = 0; // Variable to store combo streak;
 
       // Get DOM elements
       const errorSound = document.getElementById("errorSound");
@@ -322,6 +322,7 @@
       const clickSound = document.getElementById("clickSound");
       const gameOverSound = document.getElementById("gameOverSound");
       const levelWin = document.getElementById("level-win");
+      const comboval = document.getElementById("comboval");
       const modal = document.getElementById("gameOverModal");
       const finalScore = document.getElementById("finalScore");
       const timeVal = document.getElementById("timeval");
@@ -380,13 +381,18 @@
         if (check) {
           score += 10;
           scoreVal.textContent = score;
-          if (score >= 100 && !timeFreezeUsed) {
+          combo += 1;
+          comboval.textContent = combo;
+          if (combo >= 10 && timeFreezeUsed) {
+            timeFreezeUsed = false;
             timeFreeze.style.display = "block";
           }
           if (targetScore == score) {
             increaseLevel();
           }
         } else {
+          combo = 0;
+          comboval.textContent = combo;
           score -= 10;
           scoreVal.textContent = score;
         }
@@ -430,6 +436,8 @@
         setTimeout(() => startTimer(), 5000);
         timeFreeze.style.display = "none";
         timeFreezeUsed = true;
+        combo = 0;
+        comboval.textContent = combo;
         powerUp.play();
       });
 

@@ -62,6 +62,21 @@
       .welcome-button:hover {
         background-color: var(--primary-hover);
       }
+
+      @media (max-width: 480px) {
+        .welcome-page h1 {
+          font-size: 1.2rem !important; /* Force smaller size for h1 on phones */
+        }
+
+        .welcome-page p {
+          font-size: 0.75rem !important; /* Force smaller size for paragraph on phones */
+        }
+
+        .welcome-button {
+          font-size: 1rem !important; /* Force smaller button text on phones */
+          padding: 0.5rem 1rem !important;
+        }
+      }
     </style>
   </head>
   <body>

@@ -75,6 +75,70 @@
       >
         Instructions
       </button>
+      <button
+        id="themeBtn"
+        class="welcome-button"
+        onclick="location.href='settings.html';"
+      >
+        Theme
+      </button>
     </div>
+    <script>
+      const root = document.documentElement;
+
+const themes = {
+  aqua: {
+    '--primary-color': 'rgb(57, 173, 250)',
+    '--secondary-color': 'rgb(0, 155, 251)',
+    '--dashboard-color': 'rgb(255, 255, 255)',
+    '--background-color': 'rgb(93, 233, 255)',
+    '--primary-hover': 'rgb(0, 109, 181)'
+  },
+  dark: {
+    '--primary-color': '#1F1F1F',
+    '--secondary-color': '#323232',
+    '--dashboard-color': '#2C2C2C',
+    '--background-color': '#121212',
+    '--primary-hover': '#4D4D4D'
+  },
+  love: {
+    '--primary-color': '#FF6B81',
+    '--secondary-color': '#FF577F',
+    '--dashboard-color': '#FFBCCF',
+    '--background-color': '#FFD6E0',
+    '--primary-hover': '#E63946'
+  },
+  fire: {
+    '--primary-color': '#FF4500',
+    '--secondary-color': '#FF6347',
+    '--dashboard-color': '#FFDDC1',
+    '--background-color': '#FF7F50',
+    '--primary-hover': '#E25822'
+  },
+  grass: {
+    '--primary-color': '#6B8E23',
+    '--secondary-color': '#9ACD32',
+    '--dashboard-color': '#F0FFF0',
+    '--background-color': '#7FFF00',
+    '--primary-hover': '#556B2F'
+  }
+};
+
+// Function to apply the theme from localStorage
+const applyTheme = (theme) => {
+  if (theme && themes[theme]) {
+    for (let key in themes[theme]) {
+      root.style.setProperty(key, themes[theme][key]);
+    }
+  }
+};
+
+// Get the stored theme from localStorage and apply it
+const savedTheme = localStorage.getItem('selectedTheme');
+if (savedTheme) {
+  applyTheme(savedTheme);
+}
+    </script>
   </body>
 </html>
+

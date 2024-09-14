@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubble Game</title>
+    <style>
+      :root {
+        --primary-color: rgb(57, 173, 250); /* Aqua Theme */
+        --secondary-color: rgb(0, 155, 251);
+        --dashboard-color: rgb(255, 255, 255);
+        --background-color: rgb(93, 233, 255);
+        --primary-hover: rgb(0, 109, 181);
+      }
+      body {
+        height: 100vh;
+        width: 100%;
+        background-color: var(--background-color);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+      }
+      h1 {
+        color: rgb(0, 0, 0);
+        font-weight: 800;
+      }
+      .themeBtns {
+        background-color: var(--secondary-color);
+        border-radius: 1.25rem;
+        height: 30rem;
+        width: 16rem;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-direction: column;
+        gap: 1.5rem;
+        padding: 1rem;
+      }
+      button {
+        height: 3rem;
+        width: 12rem;
+        border: none;
+        background-color: var(--primary-color);
+        border-radius: 1.25rem;
+        color: white;
+        padding: 0.5rem 1rem;
+        cursor: pointer;
+      }
+      button:hover {
+        background-color: var(--primary-hover);
+      }
+    </style>
+  </head>
+  <body>
+    <h1>Pick Your Colorful Themes Here</h1>
+    <div class="themeBtns">
+      <button id="aqua">Aqua</button>
+      <button id="dark">Dark</button>
+      <button id="love">Love</button>
+      <button id="fire">Fire</button>
+      <button id="grass">Grass</button>
+    </div>
+    
+    <script>
+      const root = document.documentElement;
+
+      const themes = {
+        aqua: {
+          '--primary-color': 'rgb(57, 173, 250)',
+          '--secondary-color': 'rgb(0, 155, 251)',
+          '--dashboard-color': 'rgb(255, 255, 255)',
+          '--background-color': 'rgb(93, 233, 255)',
+          '--primary-hover': 'rgb(0, 109, 181)'
+        },
+        dark: {
+          '--primary-color': '#1F1F1F',
+          '--secondary-color': '#323232',
+          '--dashboard-color': '#2C2C2C',
+          '--background-color': '#121212',
+          '--primary-hover': '#4D4D4D'
+        },
+        love: {
+          '--primary-color': '#FF6B81',
+          '--secondary-color': '#FF577F',
+          '--dashboard-color': '#FFBCCF',
+          '--background-color': '#FFD6E0',
+          '--primary-hover': '#E63946'
+        },
+        fire: {
+          '--primary-color': '#FF4500',
+          '--secondary-color': '#FF6347',
+          '--dashboard-color': '#FFDDC1',
+          '--background-color': '#FF7F50',
+          '--primary-hover': '#E25822'
+        },
+        grass: {
+          '--primary-color': '#6B8E23',
+          '--secondary-color': '#9ACD32',
+          '--dashboard-color': '#F0FFF0',
+          '--background-color': '#7FFF00',
+          '--primary-hover': '#556B2F'
+        }
+      };
+
+      // Apply the selected theme
+      const applyTheme = (theme) => {
+        for (let key in themes[theme]) {
+          root.style.setProperty(key, themes[theme][key]);
+        }
+        // Store the selected theme in localStorage
+        localStorage.setItem('selectedTheme', theme);
+      };
+
+      // Check if a theme is stored in localStorage
+      const savedTheme = localStorage.getItem('selectedTheme');
+      if (savedTheme && themes[savedTheme]) {
+        applyTheme(savedTheme);
+      }
+
+      // Add event listeners to buttons
+      document.getElementById('aqua').addEventListener('click', () => applyTheme('aqua'));
+      document.getElementById('dark').addEventListener('click', () => applyTheme('dark'));
+      document.getElementById('love').addEventListener('click', () => applyTheme('love'));
+      document.getElementById('fire').addEventListener('click', () => applyTheme('fire'));
+      document.getElementById('grass').addEventListener('click', () => applyTheme('grass'));
+    </script>
+  </body>
+</html>

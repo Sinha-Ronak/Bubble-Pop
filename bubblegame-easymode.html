@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubble Game</title>
+    <style>
+      /* General CSS Reset */
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+        font-family: Cambria, Cochin, Georgia, Times, "Times New Roman", serif;
+      }
+
+      :root{
+        --primary-color: rgb(57, 173, 250);
+        --secondary-color: rgb(0, 155, 251);
+        --dashboard-color: rgb(255,255,255);
+        --background-color: rgb(93, 233, 255);
+        --primary-hover: rgb(0, 109, 181);
+        --primary-font:rgb(0,0,0);
+        --secondary-font:rgb(255,255,255);
+      }
+
+      /* Body Styles */
+      body {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        width: 100%;
+        background-color: var(--background-color);
+      }
+
+      /* Main Game Container */
+      .main {
+        width: 60%;
+        height: 80%;
+        background-color: var(--dashboard-color);
+        border-radius: 0.625rem;
+        overflow: hidden;
+        position: relative;
+      }
+
+      /* Upper Section for Scoreboard and Timer */
+      .upper {
+        background-color: var(--secondary-color);
+        height: 20%;
+        width: 100%;
+        display: flex;
+        justify-content: space-evenly;
+        align-items: center;
+        flex-wrap: wrap;
+      }
+
+      /* Common styles for Scoreboard, Timer, and Hit Counter */
+      .score-board {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: 3rem;
+        width: 8.7rem;  
+        gap: 0.5rem;
+        padding: 0.125rem;
+        color: var(--secondary-font);
+      }
+
+      .score-box {
+        border-radius: 0.3125rem;
+        height: 2.5rem;
+        width: 2.5rem;
+        background-color: var(--dashboard-color);
+        color: var(--primary-font);
+        font-size: 1.4rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        font-weight: 800;
+        padding: 0.125rem;
+      }
+
+      /* Dashboard for Bubbles */
+      .dash-board {
+        height: 80%;
+        width: 100%;
+        padding: 0.625rem;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-wrap: wrap;
+        gap: 0.625rem;
+        margin: 0.3125rem 0px;
+        background-color: var(--dashboard-color);
+      }
+
+      /* Bubble Styles */
+      .bub {
+        height: 2.5rem;
+        width: 2.5rem;
+        border-radius: 50%;
+        display: flex;
+        font-size: 1.5625rem;
+        font-weight: bolder;
+        align-items: center;
+        justify-content: center;
+        background-color: var(--primary-color);
+        color: var(--primary-font);
+      }
+
+      .bub:hover {
+        background-color: var(--primary-hover);
+        cursor: pointer;
+      }
+
+      .power-ups {
+        height: 12.5rem;
+        width: 6.25rem;
+        border: 0.125rem solid black;
+        margin-inline: 1cm;
+        border-radius: 1.25rem;
+        background-color: #e9dcdc;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        padding: 0.3125rem;
+      }
+
+      .freeze-time {
+        height: 3.75rem;
+        width: 5rem;
+        border: 0.125rem solid black;
+        border-radius: 1.25rem;
+        background-size: cover;
+        padding: 0.0625rem;
+        display: none;
+      }
+
+      .freeze-time > img {
+        height: 3.375rem;
+        width: 4.625rem;
+        border-radius: 1.25rem;
+      }
+
+      /* Modal Styles */
+      .modal {
+        display: none;
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background-color: rgba(0, 0, 0, 0.7);
+        color: var(--secondary-font);
+        padding: 1.25rem;
+        border-radius: 0.625rem;
+        box-shadow: 0 0 0.625rem rgba(0, 0, 0, 0.2);
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        z-index: 999;
+      }
+
+      .modal h2 {
+        margin-bottom: 1.25rem;
+        font-size: 2.25rem;
+      }
+
+      .modal p {
+        margin-bottom: 1.25rem;
+        font-size: 1.5rem;
+      }
+
+      .modal button {
+        padding: 0.625rem 1.25rem;
+        background-color: var(--primary-color);
+        color: var(--secondary-font);
+        border: none;
+        border-radius: 0.3125rem;
+        cursor: pointer;
+        font-size: 1.125rem;
+      }
+
+      .modal button:hover {
+        background-color: var(--primary-hover);
+      }
+
+      /* Media Queries for Responsiveness */
+      @media (max-width: 768px) {
+        .main {
+          width: 90%;
+          height: 90%;
+        }
+
+        .upper {
+          height: 30%;
+          gap: 0.625rem;
+          padding: 0.3125rem 0px;
+        }
+
+        .bub {
+          height: 2.1875rem;
+          width: 2.1875rem;
+          font-size: 1.25rem;
+        }
+
+        .power-ups {
+          margin-inline: 0.5cm;
+        }
+      }
+
+      @media (max-width: 480px) {
+        body {
+          flex-direction: column;
+        }
+        .main {
+          width: 100%;
+          height: 95%;
+          border-radius: 0;
+        }
+
+        .upper {
+          height: 30%;
+          justify-content: space-evenly;
+        }
+
+        .score-board > h2 {
+          font-size: 1rem;
+        }
+
+        .score-box {
+          font-size: 1rem;
+          height: 1.875rem;
+          width: 1.875rem;
+        }
+
+        .bub {
+          height: 1.875rem;
+          width: 1.875rem;
+          font-size: 1.125rem;
+        }
+
+        .power-ups {
+          margin: 0.1cm 0cm;
+          height: 6.25rem;
+          width: 12.5rem;
+        }
+
+        .modal h2 {
+          font-size: 1.75rem;
+        }
+
+        .modal p {
+          font-size: 1.25rem;
+        }
+
+        .modal button {
+          font-size: 1rem;
+          padding: 0.5rem 1rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <section class="power-ups">
+      <div class="freeze-time">
+        <img src="stopwatch.jpg" alt="Time Freeze" />
+      </div>
+    </section>
+
+    <main class="main">
+      <!-- Scoreboard Section -->
+      <header class="upper">
+        <section class="score-board">
+          <h2>SCORE</h2>
+          <div id="scoreval" class="score-box">0</div>
+        </section>
+        <section class="score-board">
+          <h2>TARGET</h2>
+          <div id="targetval" class="score-box">150</div>
+        </section>
+        <section class="score-board">
+          <h2>TIMER</h2>
+          <div id="timeval" class="score-box">100</div>
+        </section>
+        <section class="score-board">
+          <h2>LEVEL</h2>
+          <div id="levelval" class="score-box">1</div>
+        </section>
+        <section class="score-board">
+          <h2>COMBO</h2>
+          <div id="comboval" class="score-box">0</div>
+        </section>
+        <section class="score-board">
+          <h2>HIT</h2>
+          <div id="hitval" class="score-box">1</div>
+        </section>
+      </header>
+
+      <!-- Dashboard for Bubbles -->
+      <section class="dash-board"></section>
+
+      <!-- Modal for Game Over -->
+      <section class="modal" id="gameOverModal">
+        <h2>Game Over</h2>
+        <p>Your Score is: <span id="finalScore">0</span></p>
+        <button onclick="restartGame()">Play Again</button>
+      </section>
+    </main>
+
+    <!-- Sound Effects -->
+    <audio src="bubble-pop 1.mp3" id="clickSound"></audio>
+    <audio src="game-over.mp3" id="gameOverSound"></audio>
+    <audio src="error 1.mp3" id="errorSound"></audio>
+    <audio src="power-up.mp3" id="power-up"></audio>
+    <audio src="Level-win.mp3" id="level-win"></audio>
+
+    <script>
+      // Initialize game variables
+      var timer = 100; // Starting timer value
+      var score = 0; // Initial score
+      var initialTimer = 100; // Initial value of the Timer
+      var targetHit; // Variable to store the current target number
+      var intervalTimer; // Variable to store the interval for the timer
+      var timeFreezeUsed = true; // Variable to check that Time Freeze is used or not
+      var targetScore = 150; // Variable to store the Target Score
+      var level = 1; // Variable to store Level
+      var combo = 0; // Variable to store combo streak;
+
+      // Get DOM elements
+      const errorSound = document.getElementById("errorSound");
+      const powerUp = document.getElementById("power-up");
+      const clickSound = document.getElementById("clickSound");
+      const gameOverSound = document.getElementById("gameOverSound");
+      const levelWin = document.getElementById("level-win");
+      const comboval = document.getElementById("comboval");
+      const modal = document.getElementById("gameOverModal");
+      const finalScore = document.getElementById("finalScore");
+      const timeVal = document.getElementById("timeval");
+      const scoreVal = document.getElementById("scoreval");
+      const hitVal = document.getElementById("hitval");
+      const levelVal = document.getElementById("levelval");
+      const targetVal = document.getElementById("targetval");
+      const dashBoard = document.querySelector(".dash-board");
+      const timeFreeze = document.querySelector(".freeze-time");
+
+      //Funtion to start Game
+      function startGame() {
+        createBubbles();
+        startTimer();
+        setNewTargetHit();
+      }
+      startGame();
+
+      // Function to generate random bubbles
+      function createBubbles() {
+        let bubblesHTML = "";
+        for (let i = 1; i < 163; i++) {
+          const randomNumber = Math.floor(Math.random() * 10);
+          bubblesHTML += `<div class="bub">${randomNumber}</div>`;
+        }
+        dashBoard.innerHTML = bubblesHTML;
+      }
+
+      // Function to start the game timer
+      function startTimer() {
+        if (intervalTimer) {
+          clearInterval(intervalTimer);
+        }
+
+        intervalTimer = setInterval(() => {
+          if (timer > 0) {
+            timer--;
+            timeVal.textContent = timer;
+          } else {
+            clearInterval(intervalTimer);
+            gameOverSound.play();
+            finalScore.textContent = score;
+            modal.style.display = "flex";
+          }
+        }, 1000);
+      }
+
+      // Function to select a new target hit number
+      function setNewTargetHit() {
+        targetHit = Math.floor(Math.random() * 10);
+        hitVal.textContent = targetHit;
+      }
+
+      // Function to increase or decrease the score
+      function changeScore(check) {
+        if (check) {
+          score += 10;
+          scoreVal.textContent = score;
+          combo += 1;
+          comboval.textContent = combo;
+          if (combo >= 10 && timeFreezeUsed) {
+            timeFreezeUsed = false;
+            timeFreeze.style.display = "block";
+          }
+          if (targetScore == score) {
+            increaseLevel();
+          }
+        } else {
+          combo = 0;
+          comboval.textContent = combo;
+          score -= 10;
+          scoreVal.textContent = score;
+        }
+      }
+
+      // Event listener to handle bubble clicks
+      dashBoard.addEventListener("click", function (e) {
+        const clickedNumber = Number(e.target.textContent);
+        if (targetHit === clickedNumber) {
+          changeScore(true);
+          setNewTargetHit();
+          createBubbles();
+          clickSound.play();
+        } else {
+          changeScore(false);
+          setNewTargetHit();
+          createBubbles();
+          errorSound.play();
+        }
+      });
+
+      // Function to restart the game
+      function restartGame() {
+        modal.style.display = "none";
+        score = 0;
+        timer = 100;
+        initialTimer = 100;
+        targetScore = 150;
+        level = 1;
+        scoreVal.textContent = score;
+        levelVal.textContent = level;
+        targetVal.textContent = targetScore;
+        setNewTargetHit();
+        createBubbles();
+        startTimer();
+      }
+
+      // Function to enable Time-Freeze Power up
+      timeFreeze.addEventListener("click", function () {
+        clearInterval(intervalTimer);
+        setTimeout(() => startTimer(), 5000);
+        timeFreeze.style.display = "none";
+        timeFreezeUsed = true;
+        combo -= 10;
+        comboval.textContent = combo;
+        powerUp.play();
+      });
+
+      // Function to Increase the Level
+      function increaseLevel() {
+        levelWin.play();
+        setTimeout(() => {
+          alert(`You Completed the Level: ${level}`);
+          level++;
+          levelVal.textContent = level;
+        }, 100);
+        targetScore += 10;
+        targetVal.textContent = targetScore;
+        initialTimer -= 5;
+        timer = initialTimer;
+        timeVal.textContent = timer;
+        score = 0;
+      }
+
+      const root = document.documentElement;
+
+  const themes = {
+    aqua: {
+      '--primary-color': 'rgb(57, 173, 250)',
+      '--secondary-color': 'rgb(0, 155, 251)',
+      '--dashboard-color': 'rgb(255, 255, 255)',
+      '--background-color': 'rgb(93, 233, 255)',
+      '--primary-hover': 'rgb(0, 109, 181)',
+      '--primary-font':'rgb(0,0,0)',
+      '--secondary-font':'rgb(255,255,255)'
+    },
+    dark: {
+      '--primary-color': '#1F1F1F',
+      '--secondary-color': '#323232',
+      '--dashboard-color': '#232323',
+      '--background-color': '#121212',
+      '--primary-hover': '#4D4D4D',
+      '--primary-font':'rgb(255,255,255)',
+      '--secondary-font':'rgb(255,255,255)'
+    },
+    love: {
+      '--primary-color': '#FF6B81',
+      '--secondary-color': '#FF577F',
+      '--dashboard-color': '#FFBCCF',
+      '--background-color': '#FFD6E0',
+      '--primary-hover': '#E63946',
+      '--primary-font':'rgb(0,0,0)',
+      '--secondary-font':'rgb(255,255,255)'
+    },
+    fire: {
+      '--primary-color': '#FF4500',
+      '--secondary-color': '#FF6347',
+      '--dashboard-color': '#FFDDC1',
+      '--background-color': '#FF7F50',
+      '--primary-hover': '#E25822',
+      '--primary-font':'rgb(0,0,0)',
+      '--secondary-font':'rgb(255,255,255)'
+    },
+    grass: {
+      '--primary-color': '#6B8E23',
+      '--secondary-color': '#9ACD32',
+      '--dashboard-color': '#F0FFF0',
+      '--background-color': '#7FFF00',
+      '--primary-hover': '#556B2F',
+      '--primary-font':'rgb(0,0,0)',
+      '--secondary-font':'rgb(255,255,255)'
+    }
+  };
+
+  // Function to apply the theme from localStorage
+  const applyTheme = (theme) => {
+    if (theme && themes[theme]) {
+      for (let key in themes[theme]) {
+        root.style.setProperty(key, themes[theme][key]);
+      }
+    }
+  };
+
+  // Get the stored theme from localStorage and apply it
+  const savedTheme = localStorage.getItem('selectedTheme');
+  if (savedTheme) {
+    applyTheme(savedTheme);
+  }
+    </script>
+  </body>
+</html>

@@ -1,25 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
   <head>
-    <!-- Google tag (gtag.js) -->
-<script async src="https://www.googletagmanager.com/gtag/js?id=G-WC1EQ02SLK"></script>
-<script>
-  window.dataLayer = window.dataLayer || [];
-  function gtag(){dataLayer.push(arguments);}
-  gtag('js', new Date());
-
-  gtag('config', 'G-WC1EQ02SLK');
-</script>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Bubble Game</title>
     <style>
-      :root{
+      :root {
         --primary-color: rgb(57, 173, 250);
         --secondary-color: rgb(0, 155, 251);
-        --dashboard-color: rgb(255,255,255);
+        --dashboard-color: rgb(255, 255, 255);
         --background-color: rgb(93, 233, 255);
         --primary-hover: rgb(0, 109, 181);
+      }
+      html,body{
+        margin: 0%;
+        padding: 0%;
       }
       /* Welcome Page Styles */
       .welcome-page {
@@ -30,11 +25,7 @@
         height: 100vh;
         background-color: var(--background-color);
         color: white;
-        position: absolute;
-        top: 0;
-        left: 0;
         width: 100%;
-        z-index: 1000;
       }
 
       .welcome-page h1 {
@@ -62,7 +53,6 @@
       .welcome-button:hover {
         background-color: var(--primary-hover);
       }
-
       @media (max-width: 480px) {
         .welcome-page h1 {
           font-size: 1.2rem !important; /* Force smaller size for h1 on phones */
@@ -84,10 +74,9 @@
     <div id="welcomePage" class="welcome-page">
       <h1>Welcome to Bubble Smash</h1>
       <p>Pop the bubbles, beat the timer, and reach your target score!</p>
-      <button
-        id="startGameBtn"
+      <button id="startGameBtn"
         class="welcome-button"
-        onclick="location.href='bubblegame.html';"
+        onclick="location.href='modeselection.html';"
       >
         Start Game
       </button>
@@ -109,59 +98,68 @@
     <script>
       const root = document.documentElement;
 
-const themes = {
-  aqua: {
-    '--primary-color': 'rgb(57, 173, 250)',
-    '--secondary-color': 'rgb(0, 155, 251)',
-    '--dashboard-color': 'rgb(255, 255, 255)',
-    '--background-color': 'rgb(93, 233, 255)',
-    '--primary-hover': 'rgb(0, 109, 181)'
-  },
-  dark: {
-    '--primary-color': '#1F1F1F',
-    '--secondary-color': '#323232',
-    '--dashboard-color': '#2C2C2C',
-    '--background-color': '#121212',
-    '--primary-hover': '#4D4D4D'
-  },
-  love: {
-    '--primary-color': '#FF6B81',
-    '--secondary-color': '#FF577F',
-    '--dashboard-color': '#FFBCCF',
-    '--background-color': '#FFD6E0',
-    '--primary-hover': '#E63946'
-  },
-  fire: {
-    '--primary-color': '#FF4500',
-    '--secondary-color': '#FF6347',
-    '--dashboard-color': '#FFDDC1',
-    '--background-color': '#FF7F50',
-    '--primary-hover': '#E25822'
-  },
-  grass: {
-    '--primary-color': '#6B8E23',
-    '--secondary-color': '#9ACD32',
-    '--dashboard-color': '#F0FFF0',
-    '--background-color': '#7FFF00',
-    '--primary-hover': '#556B2F'
-  }
-};
+      const themes = {
+        aqua: {
+          "--primary-color": "rgb(57, 173, 250)",
+          "--secondary-color": "rgb(0, 155, 251)",
+          "--dashboard-color": "rgb(255, 255, 255)",
+          "--background-color": "rgb(93, 233, 255)",
+          "--primary-hover": "rgb(0, 109, 181)",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        dark: {
+          "--primary-color": "#1F1F1F",
+          "--secondary-color": "#323232",
+          "--dashboard-color": "#232323",
+          "--background-color": "#121212",
+          "--primary-hover": "#4D4D4D",
+          "--primary-font": "rgb(255,255,255)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        love: {
+          "--primary-color": "#FF6B81",
+          "--secondary-color": "#FF577F",
+          "--dashboard-color": "#FFBCCF",
+          "--background-color": "#FFD6E0",
+          "--primary-hover": "#E63946",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        fire: {
+          "--primary-color": "#FF4500",
+          "--secondary-color": "#FF6347",
+          "--dashboard-color": "#FFDDC1",
+          "--background-color": "#FF7F50",
+          "--primary-hover": "#E25822",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        grass: {
+          "--primary-color": "#6B8E23",
+          "--secondary-color": "#9ACD32",
+          "--dashboard-color": "#F0FFF0",
+          "--background-color": "#7FFF00",
+          "--primary-hover": "#556B2F",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+      };
 
-// Function to apply the theme from localStorage
-const applyTheme = (theme) => {
-  if (theme && themes[theme]) {
-    for (let key in themes[theme]) {
-      root.style.setProperty(key, themes[theme][key]);
-    }
-  }
-};
+      // Function to apply the theme from localStorage
+      const applyTheme = (theme) => {
+        if (theme && themes[theme]) {
+          for (let key in themes[theme]) {
+            root.style.setProperty(key, themes[theme][key]);
+          }
+        }
+      };
 
-// Get the stored theme from localStorage and apply it
-const savedTheme = localStorage.getItem('selectedTheme');
-if (savedTheme) {
-  applyTheme(savedTheme);
-}
+      // Get the stored theme from localStorage and apply it
+      const savedTheme = localStorage.getItem("selectedTheme");
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      }
     </script>
   </body>
 </html>
-

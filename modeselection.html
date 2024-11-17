@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bubble Game</title>
+    <style>
+      :root {
+        --primary-color: rgb(57, 173, 250);
+        --secondary-color: rgb(0, 155, 251);
+        --dashboard-color: rgb(255, 255, 255);
+        --background-color: rgb(93, 233, 255);
+        --primary-hover: rgb(0, 109, 181);
+      }
+      html,body{
+        margin: 0%;
+        padding: 0%;
+      }
+      /* Welcome Page Styles */
+      .welcome-page {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        height: 100vh;
+        background-color: var(--background-color);
+        color: white;
+        width: 100%;
+      }
+
+      .welcome-page h1 {
+        font-size: 2.5rem;
+        margin-bottom: 1.25rem;
+      }
+
+      .welcome-page p {
+        font-size: 1.5rem;
+        margin-bottom: 2rem;
+      }
+
+      .welcome-button {
+        padding: 0.75rem 1.5rem;
+        margin: 0.5rem;
+        font-size: 1.25rem;
+        background-color: var(--primary-color);
+        border: none;
+        border-radius: 0.5rem;
+        cursor: pointer;
+        color: white;
+        width: 10rem;
+      }
+
+      .welcome-button:hover {
+        background-color: var(--primary-hover);
+      }
+      @media (max-width: 480px) {
+        .welcome-page h1 {
+          font-size: 1.2rem !important; /* Force smaller size for h1 on phones */
+        }
+
+        .welcome-page p {
+          font-size: 0.75rem !important; /* Force smaller size for paragraph on phones */
+        }
+
+        .welcome-button {
+          font-size: 1rem !important; /* Force smaller button text on phones */
+          padding: 0.5rem 1rem !important;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- Welcome Page -->
+    <div id="welcomePage" class="welcome-page">
+      <button id="startGameBtn"
+        class="welcome-button"
+        onclick="location.href='bubblegame-easymode.html';"
+      >
+        Easy
+      </button>
+      <button
+        id="instructionsBtn"
+        class="welcome-button"
+        onclick="location.href='bubblegame-mediummode.html';"
+      >
+        Medium
+      </button>
+      <button
+        id="themeBtn"
+        class="welcome-button"
+        onclick="location.href='bubblegame-hardmode.html';"
+      >
+        Hard
+      </button>
+    </div>
+    <script>
+      const root = document.documentElement;
+
+      const themes = {
+        aqua: {
+          "--primary-color": "rgb(57, 173, 250)",
+          "--secondary-color": "rgb(0, 155, 251)",
+          "--dashboard-color": "rgb(255, 255, 255)",
+          "--background-color": "rgb(93, 233, 255)",
+          "--primary-hover": "rgb(0, 109, 181)",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        dark: {
+          "--primary-color": "#1F1F1F",
+          "--secondary-color": "#323232",
+          "--dashboard-color": "#232323",
+          "--background-color": "#121212",
+          "--primary-hover": "#4D4D4D",
+          "--primary-font": "rgb(255,255,255)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        love: {
+          "--primary-color": "#FF6B81",
+          "--secondary-color": "#FF577F",
+          "--dashboard-color": "#FFBCCF",
+          "--background-color": "#FFD6E0",
+          "--primary-hover": "#E63946",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        fire: {
+          "--primary-color": "#FF4500",
+          "--secondary-color": "#FF6347",
+          "--dashboard-color": "#FFDDC1",
+          "--background-color": "#FF7F50",
+          "--primary-hover": "#E25822",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+        grass: {
+          "--primary-color": "#6B8E23",
+          "--secondary-color": "#9ACD32",
+          "--dashboard-color": "#F0FFF0",
+          "--background-color": "#7FFF00",
+          "--primary-hover": "#556B2F",
+          "--primary-font": "rgb(0,0,0)",
+          "--secondary-font": "rgb(255,255,255)",
+        },
+      };
+
+      // Function to apply the theme from localStorage
+      const applyTheme = (theme) => {
+        if (theme && themes[theme]) {
+          for (let key in themes[theme]) {
+            root.style.setProperty(key, themes[theme][key]);
+          }
+        }
+      };
+
+      // Get the stored theme from localStorage and apply it
+      const savedTheme = localStorage.getItem("selectedTheme");
+      if (savedTheme) {
+        applyTheme(savedTheme);
+      }
+    </script>
+  </body>
+</html>

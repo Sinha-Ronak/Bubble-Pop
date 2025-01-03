@@ -70,23 +70,24 @@
     </style>
   </head>
   <body>
+    
     <!-- Welcome Page -->
     <div id="welcomePage" class="welcome-page">
-      <button id="startGameBtn"
+      <button id="easyBtn"
         class="welcome-button"
         onclick="location.href='bubblegame-easymode.html';"
       >
         Easy
       </button>
       <button
-        id="instructionsBtn"
+        id="mediumBtn"
         class="welcome-button"
         onclick="location.href='bubblegame-mediummode.html';"
       >
         Medium
       </button>
       <button
-        id="themeBtn"
+        id="hardBtn"
         class="welcome-button"
         onclick="location.href='bubblegame-hardmode.html';"
       >
@@ -95,7 +96,7 @@
     </div>
     <script>
       const root = document.documentElement;
-
+      
       const themes = {
         aqua: {
           "--primary-color": "rgb(57, 173, 250)",

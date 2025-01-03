@@ -12,7 +12,8 @@
         --background-color: rgb(93, 233, 255);
         --primary-hover: rgb(0, 109, 181);
       }
-      html,body{
+      html,
+      body {
         margin: 0%;
         padding: 0%;
       }
@@ -70,11 +71,13 @@
     </style>
   </head>
   <body>
+    
     <!-- Welcome Page -->
     <div id="welcomePage" class="welcome-page">
-      <h1>Welcome to Bubble Smash</h1>
+      <h1>Welcome to Bubble Pop</h1>
       <p>Pop the bubbles, beat the timer, and reach your target score!</p>
-      <button id="startGameBtn"
+      <button
+        id="startGameBtn"
         class="welcome-button"
         onclick="location.href='modeselection.html';"
       >
@@ -94,7 +97,15 @@
       >
         Theme
       </button>
+      <button
+        id="themeBtn"
+        class="welcome-button"
+        onclick="location.href='about.html';"
+      >
+        About Me
+      </button>
     </div>
+
     <script>
       const root = document.documentElement;
 
@@ -163,3 +174,4 @@
     </script>
   </body>
 </html>
+

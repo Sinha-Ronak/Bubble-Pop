@@ -186,6 +186,74 @@
         background-color: var(--primary-hover);
       }
 
+      /* Container styling */
+      .level-up-pop-up {
+        background: linear-gradient(145deg, #1e293b, #334155);
+        color: #f3f4f6;
+        position: absolute;
+        z-index: 1000;
+        border-radius: 20px;
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.4);
+        padding: 30px;
+        height: 80vh;
+        width: 90%;
+        max-width: 500px;
+        text-align: center;
+        display: none;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        animation: popup-in 0.5s ease;
+      }
+
+      /* Message styling */
+      .level-up-message {
+        font-size: 2.5rem;
+        font-weight: bold;
+        color: #e2e8f0;
+        margin-bottom: 30px;
+        line-height: 1.5;
+        text-shadow: 2px 2px 5px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Buttons styling */
+      .level-up-buttons {
+        display: flex;
+        justify-content: space-evenly;
+        gap: 15px;
+      }
+
+      .level-up-btn {
+        padding: 15px 30px;
+        font-size: 1.5rem;
+        font-weight: bold;
+        border: none;
+        border-radius: 12px;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        background-color: #3b82f6;
+        color: white;
+        box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+      }
+
+      .level-up-btn:hover {
+        background-color: #2563eb;
+        transform: translateY(-3px);
+        box-shadow: 0 8px 20px rgba(0, 0, 0, 0.3);
+      }
+
+      /* Popup animation */
+      @keyframes popup-in {
+        0% {
+          transform: scale(0.8);
+          opacity: 0;
+        }
+        100% {
+          transform: scale(1);
+          opacity: 1;
+        }
+      }
+
       /* Media Queries for Responsiveness */
       @media (max-width: 768px) {
         .main {
@@ -309,12 +377,25 @@
       </section>
     </main>
 
+    <!-- Pop-up for level-up -->
+    <div class="level-up-pop-up" id="level-pop-up">
+      <div class="level-up-message" id="level-pop-up-message"></div>
+      <div class="level-up-buttons">
+        <button onclick="increaseLevel()" class="level-up-btn">
+          Challenge Next Level
+        </button>
+      </div>
+    </div>
+
+
     <!-- Sound Effects -->
     <audio src="bubble-pop 1.mp3" id="clickSound"></audio>
     <audio src="game-over.mp3" id="gameOverSound"></audio>
     <audio src="error 1.mp3" id="errorSound"></audio>
     <audio src="power-up.mp3" id="power-up"></audio>
     <audio src="Level-win.mp3" id="level-win"></audio>
+    <audio loop id="gameBgm" src="game-bgm.mp3"></audio>
+
 
     <script>
       // Initialize game variables
@@ -328,7 +409,11 @@
       var level = 1; // Variable to store Level
       var combo = 0; // Variable to store combo streak;
       const limit = 3;
+
       // Get DOM elements
+      const gameBGM = document.getElementById("gameBgm");
+      const levelPopUpMessage = document.getElementById("level-pop-up-message");
+      const levelPopUp = document.getElementById("level-pop-up");
       const errorSound = document.getElementById("errorSound");
       const powerUp = document.getElementById("power-up");
       const clickSound = document.getElementById("clickSound");
@@ -347,6 +432,8 @@
 
       //Funtion to start Game
       function startGame() {
+        gameBGM.play();
+        levelPopUp.style.display = "none";
         setNewTargetHit();
         createBubbles();
         startTimer();
@@ -361,17 +448,14 @@
         for (let i = 1; i <= 163; i++) {
           let randomNumber = Math.floor(Math.random() * 10); // Generate a random number between 0 and 9
 
-          // Check if the random number matches the target
           if (randomNumber === targetHit && matchingBubbleCount < limit) {
             matchingBubbleCount++; // Increment only if we haven't reached the limit
           } else {
-            // If it doesn't match or we reached the limit, generate a different number
             while (randomNumber === targetHit) {
               randomNumber = Math.floor(Math.random() * 10); // Ensure it's not the target
             }
           }
 
-          // Append the bubble HTML with the random number
           bubblesHTML += `<div class="bub">${randomNumber}</div>`;
         }
 
@@ -416,14 +500,35 @@
             timeFreeze.style.display = "block";
           }
           if (targetScore == score) {
-            increaseLevel();
+            showLevelUpPopUp();
           }
         } else {
           combo = 0;
           comboval.textContent = combo;
-          score -= 10;
+          score -= 20;
           scoreVal.textContent = score;
         }
+      }
+
+      function showLevelUpPopUp() {
+        const levelUpCongratulationsMessages = {
+          0: `Unstoppable! <br> The next level will test your limits. Dare to try?`,
+          1: `Amazing skills! <br> But the next level is where champions are made.`,
+          2: `You're on fire! <br> Can you handle the heat of the next level?`,
+          3: `Legendary! <br> But the next level is where legends fall. Prove me wrong!`,
+          4: `Incredible! <br> The next challenge is designed to break even the best.`,
+          5: `You're a pro! <br> But the next level will separate pros from the elite.`,
+          6: `Unbelievable! <br> Are you ready to conquer what lies ahead?`,
+          7: `Outstanding! <br> But only the fearless survive the next level.`,
+          8: `Dominating! <br> The next level will push you to the brink. Up for it?`,
+          9: `Masterful! <br> But the real challenge begins in the next level.`,
+        };
+
+        let randomMessage = Math.floor(Math.random() * 10);
+        levelPopUpMessage.innerHTML =
+          levelUpCongratulationsMessages[randomMessage];
+        levelWin.play();
+        levelPopUp.style.display = "flex";
       }
 
       // Event listener to handle bubble clicks
@@ -471,12 +576,9 @@
 
       // Function to Increase the Level
       function increaseLevel() {
-        levelWin.play();
-        setTimeout(() => {
-          alert(`You Completed the Level: ${level}`);
-          level++;
-          levelVal.textContent = level;
-        }, 100);
+        levelPopUp.style.display = "none";
+        level++;
+        levelVal.textContent = level;
         targetScore += 10;
         targetVal.textContent = targetScore;
         initialTimer -= 5;
